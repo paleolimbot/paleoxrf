@@ -116,7 +116,7 @@ head(pocmaj_clean)
 #> 6 poc15-2     3  2253  3197    79
 ```
 
-The `separate()` function takes a data.frame and three arguments: the column containing the values to separate, the names of the output columns, and the separator to use. This is technically a [regular expression](https://en.wikipedia.org/wiki/Regular_expression), which will only matter if you need to split on a string that contains special characters such as `+\[]()?*.{}`. Usually this isn't a problem, but if it is you can escape the string with a backslash like this: `sep = "\+"`. You can also keep your original `sample_id` column by passing `remove = FALSE`.
+The `separate()` function takes a data.frame and three arguments: the column containing the values to separate, the names of the output columns, and the separator to use. This is technically a [regular expression](https://en.wikipedia.org/wiki/Regular_expression), which will only matter if you need to split on a string that contains special characters such as `+\[]()?*.{}`. Usually this isn't a problem, but if it is you can escape the string with a backslash like this: `sep = "\\+"`. You can also keep your original `sample_id` column by passing `remove = FALSE`.
 
 There is a good chance that some of your `sample_id` values will be misspelled for some reason or another. A simple way to fix these values is using `if_else()`, which can be used to replace specific values in a column.
 
@@ -137,7 +137,7 @@ pocmaj_raw %>%
 
 For more advanced manipulation, use the `stringr` package, which provides the function `str_replace()` (among others) that can perform search and replace queries along the column.
 
-The next step is to convert depth values into numbers (they are currently text!). For this we will use `muate()` and `as.numeric()`:
+The next step is to convert depth values into numbers (they are currently text!). For this we will use `mutate()` and `as.numeric()`:
 
 ``` r
 pocmaj_clean <- pocmaj_raw %>%
@@ -200,7 +200,7 @@ head(pocmaj_long_summarised)
 #> 6 maj15-1     1     V   70.00000         NA     1
 ```
 
-Using `group_by()` then `summarise()` is common: `group_by()` specifies the columns whose unique combinations we are interested in. The values in these columns will identify unique combinations in the output, which in our case are represented by `core`, `depth`, and `param`. The `summarise()` function takes arguments in the form of `output_column_name = expression`, where `expression` is an R expression (like `mean(value)`)) where column names can be used like variables. Using `mean()` and `sd()` is a good start, but `min()` and `max()` are also useful, as well as passing `na.rm = TRUE` if `NA` values exist in the `value` column.
+Using `group_by()` then `summarise()` is common: `group_by()` specifies the columns whose unique combinations we are interested in. The values in these columns will identify unique rows in the output, which in our case are represented by `core`, `depth`, and `param`. The `summarise()` function takes arguments in the form of `output_column_name = expression`, where `expression` is an R expression (like `mean(value)`)) where column names can be used like variables. Using `mean()` and `sd()` is a good start, but `min()` and `max()` are also useful, as well as passing `na.rm = TRUE` if `NA` values exist in the `value` column.
 
 ### Converting parameter-long data to parameter-wide format
 
@@ -240,7 +240,7 @@ ggplot(pocmaj_long_summarised, aes(y = depth, x = mean_value, colour = core)) +
 #> Warning: Removed 24 rows containing missing values (geom_errorbarh).
 ```
 
-![](README-unnamed-chunk-11-1.png)
+![](README-unnamed-chunk-12-1.png)
 
 The `ggplot` library is quite intimidating at first, but it provides much flexibility and is worth the effort to [learn](http://r4ds.had.co.nz/data-visualisation.html). The above plot is constructed using a few lines, which I will describe one at a time.
 
@@ -293,6 +293,8 @@ depth_to_age(0:10)
 #>  [1] 2017 2007 1997 1987 1977 1967 1957 1947 1937 1927 1917
 ```
 
+Given this function, it can be passed to the `trans` argument of `sec_axis` to create a secondary Y axis.
+
 ``` r
 ggplot(pocmaj_long_summarised, aes(y = depth, x = mean_value, col = core)) +
   geom_path() +
@@ -300,7 +302,7 @@ ggplot(pocmaj_long_summarised, aes(y = depth, x = mean_value, col = core)) +
   scale_y_reverse(sec.axis = sec_axis(trans = ~depth_to_age(.), name = "age"))
 ```
 
-![](README-unnamed-chunk-18-1.png)
+![](README-unnamed-chunk-19-1.png)
 
 The details of creating a secondary axis can be found in `?sec_axis`. Obviously this doesn't make sense for multiple cores, but works well for multiple parameters on a single core.
 
@@ -316,7 +318,7 @@ ggplot(pocmaj_long_summarised, aes(y = depth, x = mean_value, col = core)) +
   scale_y_reverse()
 ```
 
-![](README-unnamed-chunk-19-1.png)
+![](README-unnamed-chunk-20-1.png)
 
 #### "Everything vs. everything"
 
@@ -349,7 +351,7 @@ ggplot(long_pairs, aes(x = mean_value.x, y = mean_value.y, col = core)) +
   facet_grid(param.y ~ param.x, scales = "free")
 ```
 
-![](README-unnamed-chunk-21-1.png)
+![](README-unnamed-chunk-22-1.png)
 
 This data format has the added advantage of being able to test all the correlations for significance:
 
