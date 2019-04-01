@@ -7,7 +7,7 @@
 #' @importFrom dplyr filter
 #' @importFrom dplyr ends_with
 #' @importFrom dplyr one_of
-#' @importFrom rlang .data
+#' @importFrom rlang .data !! enquo
 #' @name paleoxrf
 #' @docType package
 NULL

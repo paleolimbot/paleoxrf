@@ -21,6 +21,8 @@
 #' read_panalytical_txt(system.file("xrf_files/panalytical_test.txt", package = "paleoxrf"))
 #'
 read_olympus_vanta <- function(path, sample_id_col = "info", tz = "UTC") {
+  sample_id_col <- enquo(sample_id_col)
+
   # read second line as column names
   . <- NULL; rm(.) # CMD hack
   oly_colnames <- readr::read_csv(
@@ -50,7 +52,7 @@ read_olympus_vanta <- function(path, sample_id_col = "info", tz = "UTC") {
   oly$no_col_name <- NULL
   oly$xrf_info <- "Olympus Vanta"
   oly$date_time <- lubridate::force_tz(lubridate::as_datetime(oly$Date, tz = "UTC") + oly$Time, tz)
-  oly$sample_id <- dplyr::pull(oly, sample_id_col)
+  oly$sample_id <- dplyr::pull(oly, !!sample_id_col)
 
   oly <- oly %>%
     dplyr::mutate_at(dplyr::vars(ends_with("Concentration"), ends_with("Error 1s")), as.numeric) %>%
@@ -68,6 +70,7 @@ read_olympus_vanta <- function(path, sample_id_col = "info", tz = "UTC") {
 #' @rdname read_olympus_vanta
 #' @export
 read_panalytical_txt <- function(path, sample_id_col = "Ident", tz = "UTC") {
+  sample_id_col <- enquo(sample_id_col)
 
   col_names <- readr::read_tsv(
     path,
@@ -98,7 +101,7 @@ read_panalytical_txt <- function(path, sample_id_col = "Ident", tz = "UTC") {
 
   xrf_raw$blank_column <- NULL
   xrf_raw$xrf_info <- "Panalytical Epsilon 1"
-  xrf_raw$sample_id <- dplyr::pull(xrf_raw, sample_id_col)
+  xrf_raw$sample_id <- dplyr::pull(xrf_raw, !!sample_id_col)
   xrf_raw$date_time <- lubridate::force_tz(lubridate::dmy_hms(xrf_raw$Time, tz = "UTC"), tz)
 
   # tidy columns
