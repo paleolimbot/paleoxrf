@@ -3,23 +3,30 @@
 \name{read_olympus_vanta}
 \alias{read_olympus_vanta}
 \alias{read_panalytical_txt}
-\title{Read Olympus Vanta XRF files}
+\title{Read Olympus Vanta, Panalytical XRF files}
 \usage{
-read_olympus_vanta(path, extra_columns = "info")
+read_olympus_vanta(path, sample_id_col = "info", tz = "UTC")
 
-read_panalytical_txt(path)
+read_panalytical_txt(path, sample_id_col = "Ident", tz = "UTC")
 }
 \arguments{
 \item{path}{The location of the file}
 
-\item{extra_columns}{extra columns from the original file to include in the output}
+\item{sample_id_col}{The column containing the sample identifier}
+
+\item{tz}{Timezone of specified times}
 }
 \value{
 A data.frame
 }
 \description{
 The standard Olympus Vanta file presents all elemental concentrations in ppm, and
-all errors as 1 standard deviation.
+all errors as 1 standard deviation. The default Panalytical output format
+specifies the unit for each measurement, and does not consider error. These
+functions do their best to keep all available information in the output,
+standardizing the columns xrf_info, date_time, and sample_id. Concentration
+columns end in `conc`, standard deviation columns end in `sd`, and count
+columns end in `Iraw` or `Inet`.
 }
 \examples{
 read_olympus_vanta(system.file("xrf_files/olympus_vanta_test.csv", package = "paleoxrf"))

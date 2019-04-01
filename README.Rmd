@@ -31,6 +31,13 @@ If all is well, you should be able to load the package:
 library(paleoxrf)
 ```
 
+The examples below use **dplyr** to manipulate the output of the read functions.
+
+```{r, warning=FALSE, message=FALSE, results='hide'}
+library(dplyr)
+```
+
+
 ## Reading XRF Data
 
 The package provides a few functions to read XRF data output from several types of machines, such as the [Olympus Vanta](http://www.olympus-ims.com/en/vanta/). The function reads the raw output of the machines, rather than a "cleaned up" version from other spreadsheet software.
@@ -41,7 +48,8 @@ test_file_oly <- system.file(
   package = "paleoxrf"
 )
 
-read_olympus_vanta(test_file_oly)
+read_olympus_vanta(test_file_oly) %>%
+  select(date_time, sample_id, ends_with("_conc"))
 ```
 
 ```{r}
@@ -50,7 +58,6 @@ test_file_pan <- system.file(
   package = "paleoxrf"
 )
 
-read_panalytical_txt(test_file_pan)
+read_panalytical_txt(test_file_pan) %>%
+  select(date_time, sample_id, ends_with("_conc"))
 ```
-
-
