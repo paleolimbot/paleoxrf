@@ -49,7 +49,6 @@ read_olympus_vanta <- function(path, sample_id_col = "info", tz = "UTC") {
     )
   )
 
-  oly$no_col_name <- NULL
   oly$xrf_info <- "Olympus Vanta"
   oly$date_time <- lubridate::force_tz(lubridate::as_datetime(oly$Date, tz = "UTC") + oly$Time, tz)
   oly$sample_id <- dplyr::pull(oly, !!sample_id_col)
@@ -99,7 +98,6 @@ read_panalytical_txt <- function(path, sample_id_col = "Ident", tz = "UTC") {
     )
   )
 
-  xrf_raw$blank_column <- NULL
   xrf_raw$xrf_info <- "Panalytical Epsilon 1"
   xrf_raw$sample_id <- dplyr::pull(xrf_raw, !!sample_id_col)
   xrf_raw$date_time <- lubridate::force_tz(lubridate::dmy_hms(xrf_raw$Time, tz = "UTC"), tz)
