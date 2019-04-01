@@ -8,7 +8,15 @@ Description: XRF data is voluminous and unweildy when acquired.
   paleoxrf provides functions to help ameliorate this task.
 License: GPL-3
 Depends: R (>= 2.10)
-Imports: rlang, dplyr, magrittr, readr
+Imports: rlang, dplyr, magrittr, readr, purrr, stats, lubridate, stringr
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
+Suggests: 
+    knitr,
+    rmarkdown,
+    ggplot2,
+    tidyr,
+    tibble,
+    broom
+VignetteBuilder: knitr

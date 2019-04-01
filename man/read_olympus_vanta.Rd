@@ -2,9 +2,12 @@
 % Please edit documentation in R/read_xrf.R
 \name{read_olympus_vanta}
 \alias{read_olympus_vanta}
+\alias{read_panalytical_txt}
 \title{Read Olympus Vanta XRF files}
 \usage{
 read_olympus_vanta(path, extra_columns = "info")
+
+read_panalytical_txt(path)
 }
 \arguments{
 \item{path}{The location of the file}
@@ -20,5 +23,6 @@ all errors as 1 standard deviation.
 }
 \examples{
 read_olympus_vanta(system.file("xrf_files/olympus_vanta_test.csv", package = "paleoxrf"))
+read_panalytical_txt(system.file("xrf_files/panalytical_test.txt", package = "paleoxrf"))
 
 }
